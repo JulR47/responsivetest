@@ -65,7 +65,72 @@
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+<script type="text/javascript">
+	/*
+	VARIABLES
+	*/
+	var db
+	var base = "gastos";
+	var ver = 1.0;
+	var desc = "Control de gastos";
+	var size = 2 * 1024 * 1024;
+	var usuario = "admin";
+	var clave = "1234";
 
+	function verifica(){
+		var usuario1 = docuent.getElementById("usuario").value;
+		var clave1 = docuent.getElementById("clave").value;
+		console.log(usuario,clave);
+		if(usuario==usuario1 && clave==clave1){
+			alert("Bienvenid@ "+usuario11);
+			window.open("home.html","_self");
+		}
+		else{
+			alert("Clave de acceso o usuario incorrecto");
+		}
+	}
+	
+	window.onload = function(){
+		if (!window.openDatabase){
+			alert('Este navegador NO soporta el API WebSQL');
+			return;
+		}
+		else{
+			alert('API WebSQL funcionando');
+		}
+		//Abrimos o creamos una base de datos
+		db = openDatabase(base, ver, desc, size);
+//docuent.getElementById("enviar").addEventListener("click",verifica);
+		//Select
+		var q = 'SELECT * FROM usuarios';
+		db.transaction(function(tx){
+			tx.executeSql(q,[],function(tx,data){
+				var len = data.rows.length;
+				if(len==0){
+					alert('!Cuidado, tu aplicación no tiene usuario!');
+					window.open('usuarios.html','_self');
+				}
+				else{
+					usuario = data.rows.item(0).usuario;
+					clave = data.rows.item(0).clave; 
+				}
+			});
+		},
+		errorHandler,
+		exitoSelect);
+	}//onload
+
+	
+
+	function exitoSelect(){
+		console.log("SELECT exitoso"); 
+	}
+	
+	function errorHandler(e){
+		console.log("error: "+e.message);
+	}
+	</script>
+	
 	</head>
 	<body>
 	<header role="banner" id="fh5co-header">
